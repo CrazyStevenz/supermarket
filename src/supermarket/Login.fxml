@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="supermarket.LoginController">
+  <children>
+    <Label alignment="CENTER" contentDisplay="CENTER" layoutY="64.0" prefHeight="141.0" prefWidth="1024.0" text="Login" textAlignment="CENTER">
+      <font>
+        <Font name="Segoe UI Light" size="96.0" />
+      </font>
+    </Label>
+    <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="437.0" prefHeight="17.0" prefWidth="1024.0" textAlignment="CENTER" />
+    <PasswordField id="passwordField1" fx:id="password" layoutX="438.0" layoutY="321.0" promptText="Password" />
+    <TextField id="textField1" fx:id="username" layoutX="438.0" layoutY="288.0" promptText="Username" />
+    <Button id="button1" fx:id="login" defaultButton="true" layoutX="489.0" layoutY="359.0" mnemonicParsing="false" onAction="#login" text="Login" />
+    <Button layoutX="479.0" layoutY="454.0" mnemonicParsing="false" onAction="#create" text="CreateDB" />
+  </children>
+</AnchorPane>
