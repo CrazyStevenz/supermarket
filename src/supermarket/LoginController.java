@@ -20,9 +20,11 @@ public class LoginController
     private static PreparedStatement ps = null;
     private static ResultSet rs = null;
 
+    String name;
+    int kind;
+
     @FXML TextField username;
     @FXML PasswordField password;
-    @FXML Button login;
     @FXML Label errorLabel;
 
     @FXML
@@ -47,24 +49,42 @@ public class LoginController
             ps.setString(2, pw);
             rs = ps.executeQuery();
 
-            while (rs.next()) {
-                String name = rs.getString("name");
-                String kind = rs.getString("kind");
-
-                if (name == null) errorLabel.setText(name + kind);
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                kind = rs.getInt("kind");
             }
-
-            ScreenController.goToUserHome(event);
+        }
+        catch (SQLException e)
+        {
+            if (e.getSQLState().equals("08004"))
+            {
+                errorLabel.setText(e.getMessage());
+            }
+            else
+            {
+                errorLabel.setText("Something went wrong, please try again.");
+            }
         }
         catch (Exception e)
         {
-            System.out.println(e.getMessage());
+            errorLabel.setText("Something went horribly wrong.");
         }
         finally
         {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
+        }
+
+        if (!name.equals(""))
+        {
+            if (kind != 1 && kind != 2)
+            {
+                kind = 1;
+            }
+
+            ScreenController.goToUserHome(event);
         }
     }
 
