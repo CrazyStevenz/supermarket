@@ -8,8 +8,18 @@ import javafx.stage.Stage;
 
 class ScreenController
 {
-    static void goToUserHome(javafx.event.ActionEvent event) {
-        try {
+    private static void showStage(Stage appStage, Scene scene, String sceneName)
+    {
+        appStage.setTitle(sceneName);
+        appStage.setScene(scene);
+        appStage.setResizable(false);
+        appStage.show();
+    }
+
+    static void goToUserHome(javafx.event.ActionEvent event)
+    {
+        try
+        {
             Parent blah = FXMLLoader.load(ScreenController.class.getResource("UserHome.fxml"));
             Scene scene = new Scene(blah, GlobalConstants.SCENE_WIDTH, GlobalConstants.SCENE_HEIGHT);
             Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
