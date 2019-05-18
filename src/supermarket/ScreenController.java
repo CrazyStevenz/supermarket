@@ -11,7 +11,7 @@ class ScreenController
     static void goToUserHome(javafx.event.ActionEvent event) {
         try {
             Parent blah = FXMLLoader.load(ScreenController.class.getResource("UserHome.fxml"));
-            Scene scene = new Scene(blah, 1024, 576); // TODO Global constant
+            Scene scene = new Scene(blah, GlobalConstants.SCENE_WIDTH, GlobalConstants.SCENE_HEIGHT);
             Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             appStage.setTitle("Homepage");
             appStage.setScene(scene);
