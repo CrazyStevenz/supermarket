@@ -77,7 +77,7 @@ public class LoginController
             DbUtils.closeQuietly(conn);
         }
 
-        if (!name.equals(""))
+        if (name != null && !name.equals(""))
         {
             if (kind != 1 && kind != 2)
             {
@@ -85,6 +85,10 @@ public class LoginController
             }
 
             ScreenController.goToUserHome(event);
+        }
+        else
+        {
+            errorLabel.setText("Wrong username or password.");
         }
     }
 
