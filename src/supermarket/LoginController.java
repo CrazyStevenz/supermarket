@@ -103,7 +103,7 @@ public class LoginController
             st.executeUpdate("DROP TABLE IF EXISTS users CASCADE");
 
             String createTableUsers =
-                "CREATE TABLE users(" +
+                "CREATE TABLE users (" +
                     "id serial not null constraint users_pk primary key, " +
                     "username varchar(20), " +
                     "password varchar(40), " +
@@ -112,10 +112,25 @@ public class LoginController
                 ")";
             st.executeUpdate(createTableUsers);
 
+            String createTableProducts =
+                "CREATE TABLE products (" +
+                    "id serial not null constraint products_pk primary key, " +
+                    "name varchar(50) not null, " +
+                    "price float(2) not null, " +
+                    "stock int" +
+                ");" +
+                "CREATE UNIQUE INDEX products_name_uindex ON products (name)";
+            st.executeUpdate(createTableProducts);
+
             String createSailors =
                 "INSERT INTO users (username, password, name, kind) VALUES ('dimitris', '1234', 'Dimitris Antoniou', 1);" +
                 "INSERT INTO users (username, password, name, kind) VALUES ('kostas', '1234', 'Kostas Athanasiou', 1);";
             st.executeUpdate(createSailors);
+
+            String createProducts =
+                "INSERT INTO products (name, price, stock) VALUES ('Bananas', 2.8, 1);" +
+                "INSERT INTO products (name, price, stock) VALUES ('Feta Cheese', 8.9, 0);";
+            st.executeUpdate(createProducts);
         }
         catch (Exception e)
         {
