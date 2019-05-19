@@ -8,40 +8,31 @@ import javafx.stage.Stage;
 
 class ScreenController
 {
-    private static void showStage(Stage appStage, Scene scene, String sceneName)
-    {
-        appStage.setTitle(sceneName);
-        appStage.setScene(scene);
-        appStage.setResizable(false);
-        appStage.show();
-    }
-
-    static void goToUserHome(javafx.event.ActionEvent event)
+    private static void showStage(javafx.event.ActionEvent event, String filename, String sceneName)
     {
         try
         {
-            Parent blah = FXMLLoader.load(ScreenController.class.getResource("UserHome.fxml"));
-            Scene scene = new Scene(blah, GlobalConstants.SCENE_WIDTH, GlobalConstants.SCENE_HEIGHT);
+            Parent par = FXMLLoader.load(ScreenController.class.getResource(filename));
+            Scene scene = new Scene(par, GlobalConstants.SCENE_WIDTH, GlobalConstants.SCENE_HEIGHT);
             Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            appStage.setTitle("Homepage");
+            appStage.setTitle(sceneName);
             appStage.setScene(scene);
             appStage.setResizable(false);
             appStage.show();
         }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    static void goToUserHome(javafx.event.ActionEvent event)
+    {
+        showStage(event, "UserHome.fxml", "Homepage");
     }
 
     static void goToProducts(javafx.event.ActionEvent event)
     {
-        try
-        {
-            Parent par = FXMLLoader.load(ScreenController.class.getResource("Product.fxml"));
-            Scene scene = new Scene(par, GlobalConstants.SCENE_WIDTH, GlobalConstants.SCENE_HEIGHT);
-            Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            showStage(appStage, scene, "Products");
-        }
-        catch (Exception e)
-        {
-            // TODO
-        }
+        showStage(event, "Product.fxml", "Products");
     }
 }
