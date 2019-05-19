@@ -28,7 +28,19 @@ class ScreenController
             appStage.setResizable(false);
             appStage.show();
         }
-        catch (Exception e) {
+    }
+
+    static void goToProducts(javafx.event.ActionEvent event)
+    {
+        try
+        {
+            Parent par = FXMLLoader.load(ScreenController.class.getResource("Product.fxml"));
+            Scene scene = new Scene(par, GlobalConstants.SCENE_WIDTH, GlobalConstants.SCENE_HEIGHT);
+            Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            showStage(appStage, scene, "Products");
+        }
+        catch (Exception e)
+        {
             // TODO
         }
     }

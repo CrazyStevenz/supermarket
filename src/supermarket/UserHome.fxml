@@ -23,7 +23,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="productButton" mnemonicParsing="false" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            <Button mnemonicParsing="false" onAction="#goToProducts" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <graphic>
                   <ImageView fitHeight="144.0" fitWidth="256.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                      <image>
