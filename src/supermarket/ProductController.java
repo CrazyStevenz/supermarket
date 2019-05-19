@@ -1,8 +1,9 @@
 package supermarket;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import org.apache.commons.dbutils.DbUtils;
 import java.sql.*;
@@ -18,12 +19,18 @@ public class ProductController
     private static PreparedStatement ps = null;
     private static ResultSet rs = null;
 
-    private static int[] id = new int[10];
-    private static String[] name = new String[10];
-    private static float[] price = new float[10];
-    private static int[] stock = new int[10];
+    private static int[] id = new int[50];
+    private static String[] name = new String[50];
+    private static float[] price = new float[50];
+    private static int[] stock = new int[50];
+
+    ListView<String> productList = new ListView<>();
+    ListView<String> cartList = new ListView<>();
+    ObservableList<String> productItems = FXCollections.observableArrayList();
+    ObservableList<String> cartItems = FXCollections.observableArrayList();
 
     @FXML ScrollPane productScrollPane;
+    @FXML ScrollPane cartScrollPane;
 
     @FXML
     private void loadProducts()
@@ -51,14 +58,14 @@ public class ProductController
                 i++;
             }
 
-            VBox testVBox = new VBox();
-
             for (int j = 0; j < i; j++)
             {
-                testVBox.getChildren().add(new Button(id[j] + " - " + name[j] + " - " + price[j] + " - " + stock[j]));
+                productItems.add(name[j] + " - " + price[j] + "€ - " + stock[j] + " left");
             }
 
-            productScrollPane.setContent(testVBox);
+            productList.setItems(productItems);
+            productList.setPrefWidth(325);
+            productScrollPane.setContent(productList);
         }
         catch (Exception e)
         {
@@ -70,5 +77,14 @@ public class ProductController
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
         }
+    }
+
+    @FXML
+    private void moveToCart()
+    {
+        cartItems.add(productList.getSelectionModel().getSelectedItems().toString());
+        cartList.setItems(cartItems);
+        cartList.setPrefWidth(325);
+        cartScrollPane.setContent(cartList);
     }
 }
