@@ -1,15 +1,14 @@
 package supermarket;
 
+import java.sql.*;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.apache.commons.dbutils.DbUtils;
 
-import java.sql.*;
-
-public class LoginController
-{
+public class LoginController {
     private static String driverClassName = "org.postgresql.Driver";
     private static String url = GlobalConstants.DB_URL;
     private static String dbUsername = GlobalConstants.DB_USERNAME;
@@ -19,83 +18,71 @@ public class LoginController
     private static PreparedStatement ps = null;
     private static ResultSet rs = null;
 
-    String name;
-    int kind;
-
-    @FXML TextField username;
-    @FXML PasswordField password;
-    @FXML Label errorLabel;
+    @FXML
+    TextField usernameField;
+    @FXML
+    PasswordField passwordField;
+    @FXML
+    Label errorLabel;
 
     @FXML
-    private void login(javafx.event.ActionEvent event)
-    {
-        try
-        {
+    private void login(javafx.event.ActionEvent event) {
+        int id = -1, kind = -1;
+        String username = null, name = null;
+
+        try {
             Class.forName(driverClassName);
             conn = DriverManager.getConnection(url, dbUsername, dbPassword);
 
-            String un = username.getText();
-            String pw = password.getText();
+            username = usernameField.getText();
+            String password = passwordField.getText();
 
             String validateUser =
-                "SELECT name, kind " +
-                "FROM users " +
-                "WHERE username = ? AND password = ?" +
-                "LIMIT 1";
+                    "SELECT id, name, kind " +
+                    "FROM users " +
+                    "WHERE username = ? AND password = ?" +
+                    "LIMIT 1";
 
             ps = conn.prepareStatement(validateUser);
-            ps.setString(1, un);
-            ps.setString(2, pw);
+            ps.setString(1, username);
+            ps.setString(2, password);
             rs = ps.executeQuery();
 
-            while (rs.next())
-            {
+            while (rs.next()) {
+                id = rs.getInt("id");
                 name = rs.getString("name");
                 kind = rs.getInt("kind");
             }
-        }
-        catch (SQLException e)
-        {
-            if (e.getSQLState().equals("08004"))
-            {
+        } catch (SQLException e) {
+            if (e.getSQLState().equals("08004")) {
                 errorLabel.setText(e.getMessage());
-            }
-            else
-            {
+            } else {
                 errorLabel.setText("Something went wrong, please try again.");
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             errorLabel.setText("Something went horribly wrong.");
-        }
-        finally
-        {
+        } finally {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
         }
 
-        if (name != null && !name.equals(""))
-        {
-            if (kind != 1 && kind != 2)
-            {
+        if (username != null && name != null && !name.equals("") && id != -1) { // TODO Check if null returns ""
+            if (kind != 1 && kind != 2) {
                 kind = 1;
             }
 
+            new User(id, username, name, kind);
+
             ScreenController.goToUserHome(event);
-        }
-        else
-        {
+        } else {
             errorLabel.setText("Wrong username or password.");
         }
     }
 
     @FXML
-    private void create()
-    {
-        try
-        {
+    private void create() {
+        try {
             Class.forName(driverClassName);
             conn = DriverManager.getConnection(url, dbUsername, dbPassword);
             st = conn.createStatement();
@@ -103,23 +90,23 @@ public class LoginController
             st.executeUpdate("DROP TABLE IF EXISTS users CASCADE");
 
             String createTableUsers =
-                "CREATE TABLE users (" +
-                    "id serial not null constraint users_pk primary key, " +
-                    "username varchar(20), " +
-                    "password varchar(40), " +
-                    "name varchar(50), " +
-                    "kind int" +
-                ")";
+                    "CREATE TABLE users (" +
+                        "id serial not null constraint users_pk primary key, " +
+                        "username varchar(20), " +
+                        "password varchar(40), " +
+                        "name varchar(50), " +
+                        "kind int" +
+                    ")";
             st.executeUpdate(createTableUsers);
 
             String createTableProducts =
-                "CREATE TABLE products (" +
-                    "id serial not null constraint products_pk primary key, " +
-                    "name varchar(50) not null, " +
-                    "price float(2) not null, " +
-                    "stock int" +
-                ");" +
-                "CREATE UNIQUE INDEX products_name_uindex ON products (name)";
+                    "CREATE TABLE products (" +
+                        "id serial not null constraint products_pk primary key, " +
+                        "name varchar(50) not null, " +
+                        "price float(2) not null, " +
+                        "stock int" +
+                    ");" +
+                    "CREATE UNIQUE INDEX products_name_uindex ON products (name)";
             st.executeUpdate(createTableProducts);
 
             String createSailors =
@@ -128,16 +115,12 @@ public class LoginController
             st.executeUpdate(createSailors);
 
             String createProducts =
-                "INSERT INTO products (name, price, stock) VALUES ('Bananas', 2.8, 1);" +
-                "INSERT INTO products (name, price, stock) VALUES ('Feta Cheese', 8.9, 0);";
+                    "INSERT INTO products (name, price, stock) VALUES ('Bananas', 2.8, 1);" +
+                    "INSERT INTO products (name, price, stock) VALUES ('Feta Cheese', 8.9, 0);";
             st.executeUpdate(createProducts);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
-        finally
-        {
+        } finally {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(st);
             DbUtils.closeQuietly(conn);

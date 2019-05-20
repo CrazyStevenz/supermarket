@@ -6,14 +6,22 @@ class User {
     private String name;
     private int kind;
 
-    public User(int id, String username, String name, int kind) {
+    private static User userInstance = null;
+
+    User(int id, String username, String name, int kind) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.kind = kind;
+
+        userInstance = this;
     }
 
-    public int getId() {
+    static User getUserInstance() {
+        return userInstance;
+    }
+
+    int getId() {
         return id;
     }
 
