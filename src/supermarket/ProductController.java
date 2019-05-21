@@ -1,6 +1,6 @@
 package supermarket;
 
-import java.sql.*;
+import java.sql.*; // TODO import each one needed separately
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -121,6 +121,10 @@ public class ProductController {
                 errorLabel.setText("Database failure.");
             } catch (Exception e) {
                 errorLabel.setText("Something went wrong.");
+            } finally {
+                DbUtils.closeQuietly(rs);
+                DbUtils.closeQuietly(ps);
+                DbUtils.closeQuietly(conn);
             }
         }
     }
