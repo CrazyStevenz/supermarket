@@ -113,7 +113,7 @@ public class LoginController {
                         "user_id INT NOT NULL, " +
                         "product_id INT NOT NULL, " +
                         "amount INT NOT NULL, " +
-                        "purchase_date TIMESTAMPTZ" +
+                        "purchase_date TIMESTAMP" +
                     ");" +
                     "ALTER TABLE transactions ADD CONSTRAINT transactions_users_id_fk " +
                         "FOREIGN KEY (user_id) REFERENCES users ON UPDATE CASCADE ON DELETE CASCADE;";
