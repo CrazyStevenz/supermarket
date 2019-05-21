@@ -1,4 +1,4 @@
-package supermarket;
+package supermarket.Controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -6,6 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import org.apache.commons.dbutils.DbUtils;
+import supermarket.GlobalConstants;
+import supermarket.Models.Transaction;
+import supermarket.Models.User;
 
 import java.sql.*;
 
@@ -93,6 +96,7 @@ public class TransactionController {
 
     @FXML
     private void updateDetails() {
+        errorLabel.setText("");
         int index = transactionListView.getSelectionModel().getSelectedIndex();
 
         try {

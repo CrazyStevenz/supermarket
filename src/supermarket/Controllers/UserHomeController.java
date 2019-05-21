@@ -1,4 +1,4 @@
-package supermarket;
+package supermarket.Controllers;
 
 import javafx.fxml.FXML;
 

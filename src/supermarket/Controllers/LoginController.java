@@ -1,4 +1,4 @@
-package supermarket;
+package supermarket.Controllers;
 
 import java.sql.*;
 import javafx.fxml.FXML;
@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.apache.commons.dbutils.DbUtils;
+import supermarket.GlobalConstants;
+import supermarket.Models.User;
 
 public class LoginController {
     private static String driverClassName = "org.postgresql.Driver";
@@ -120,8 +122,8 @@ public class LoginController {
             st.executeUpdate(createTableTransactions);
 
             String createSailors =
-                "INSERT INTO users (username, password, name, kind) VALUES ('dimitris', '1234', 'Dimitris Antoniou', 1);" +
-                "INSERT INTO users (username, password, name, kind) VALUES ('kostas', '1234', 'Kostas Athanasiou', 1);";
+                    "INSERT INTO users (username, password, name, kind) VALUES ('d', '1234', 'Dimitris Antoniou', 1);" +
+                    "INSERT INTO users (username, password, name, kind) VALUES ('kostas', '1234', 'Kostas Athanasiou', 1);";
             st.executeUpdate(createSailors);
 
             String createProducts =

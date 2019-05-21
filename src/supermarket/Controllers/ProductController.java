@@ -1,4 +1,4 @@
-package supermarket;
+package supermarket.Controllers;
 
 import java.sql.*; // TODO import each one needed separately
 import javafx.fxml.FXML;
@@ -7,6 +7,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import org.apache.commons.dbutils.DbUtils;
+import supermarket.GlobalConstants;
+import supermarket.Models.Product;
+import supermarket.Models.User;
 
 public class ProductController {
     private static String driverClassName = "org.postgresql.Driver";

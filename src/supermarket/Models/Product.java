@@ -1,4 +1,4 @@
-package supermarket;
+package supermarket.Models;
 
 public class Product {
     private int id;

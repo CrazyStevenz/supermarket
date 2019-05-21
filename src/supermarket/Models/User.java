@@ -1,6 +1,6 @@
-package supermarket;
+package supermarket.Models;
 
-class User {
+public class User {
     private int id;
     private String username;
     private String name;
@@ -8,7 +8,7 @@ class User {
 
     private static User userInstance = null;
 
-    User(int id, String username, String name, int kind) {
+    public User(int id, String username, String name, int kind) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -17,15 +17,15 @@ class User {
         userInstance = this;
     }
 
-    static User getUserInstance() {
+    public static User getUserInstance() {
         return userInstance;
     }
 
-    void delete() {
+    public void delete() {
         userInstance = null;
     }
 
-    int getId() {
+    public int getId() {
         return id;
     }
 
