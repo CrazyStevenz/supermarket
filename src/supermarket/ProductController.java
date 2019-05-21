@@ -64,8 +64,10 @@ public class ProductController {
 
             productListView.setItems(productItems);
             productListView.setPrefWidth(325);
+        } catch (SQLException e) {
+            errorLabel.setText("Database failure.");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            errorLabel.setText("Something went wrong.");
         } finally {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
