@@ -1,12 +1,12 @@
 package supermarket;
 
+import java.sql.*;
+import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import org.apache.commons.dbutils.DbUtils;
-import java.sql.*;
 
 public class ProductController {
     private static String driverClassName = "org.postgresql.Driver";
@@ -21,9 +21,11 @@ public class ProductController {
 
     @FXML ListView<String> productListView;
     @FXML Label detailsLabel;
+    @FXML Label errorLabel;
 
     @FXML
     private void loadProducts() {
+        errorLabel.setText("");
         try {
             Class.forName(driverClassName);
             conn = DriverManager.getConnection(url, dbUsername, dbPassword);
@@ -80,5 +82,46 @@ public class ProductController {
                  "\n\nPrice: " + products[index].getPrice() +
                  "\n\nStock: " + products[index].getStock()
         );
+    }
+
+    @FXML
+    private void purchase() {
+        errorLabel.setText("");
+        int index = productListView.getSelectionModel().getSelectedIndex();
+        if (index == -1) {
+            errorLabel.setText("Select a product first.");
+        } else {
+            try {
+                Class.forName(driverClassName);
+                conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+
+                int productStock = products[index].getStock();
+                if (productStock < 1) {
+                    errorLabel.setText("The product you want to buy has run out.");
+                } else {
+                    String purchaseQuery =
+                            "INSERT INTO transactions (user_id, product_id, amount, purchase_date) VALUES (?, ?, 1, now())";
+                    ps = conn.prepareStatement(purchaseQuery);
+                    ps.setInt(1, User.getUserInstance().getId());
+                    ps.setInt(2, products[index].getId());
+                    ps.executeUpdate();
+
+                    String updateProductQuery =
+                            "UPDATE products SET stock = ? WHERE id = ?";
+                    ps = conn.prepareStatement(updateProductQuery);
+                    ps.setInt(1, productStock - 1);
+                    ps.setInt(2, products[index].getId());
+                    ps.executeUpdate();
+
+                    detailsLabel.setText("");
+
+                    loadProducts();
+                }
+            } catch (SQLException e) {
+                errorLabel.setText("Database failure.");
+            } catch (Exception e) {
+                errorLabel.setText("Something went wrong.");
+            }
+        }
     }
 }
