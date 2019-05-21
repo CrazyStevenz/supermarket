@@ -43,18 +43,18 @@
             </Button>
             <Button maxHeight="122.0" maxWidth="272.0" minHeight="122.0" minWidth="272.0" mnemonicParsing="false" onAction="#goToTransactions" prefHeight="122.0" prefWidth="272.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <graphic>
-                  <ImageView fitHeight="116.0" fitWidth="133.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="113.0" fitWidth="119.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/cart.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Button maxHeight="122.0" maxWidth="272.0" minHeight="122.0" minWidth="272.0" mnemonicParsing="false" onAction="#goToAbout" prefHeight="122.0" prefWidth="272.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <graphic>
-                  <ImageView fitHeight="144.0" fitWidth="256.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="55.0" fitWidth="218.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/products.png" />
+                        <Image url="@../images/about.png" />
                      </image>
                   </ImageView>
                </graphic>

@@ -21,4 +21,10 @@ public class UserHomeController
     {
         ScreenController.goToStores(event);
     }
+
+    @FXML
+    private void goToAbout(javafx.event.ActionEvent event)
+    {
+        ScreenController.goToAbout(event);
+    }
 }
