@@ -27,7 +27,7 @@
                <graphic>
                   <ImageView fitHeight="144.0" fitWidth="256.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../resources/products.png" />
+                        <Image url="@../products.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -36,7 +36,7 @@
                <graphic>
                   <ImageView fitHeight="144.0" fitWidth="256.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../resources/products.png" />
+                        <Image url="@../products.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -45,7 +45,7 @@
                <graphic>
                   <ImageView fitHeight="116.0" fitWidth="133.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../resources/cart.png" />
+                        <Image url="@../cart.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -54,7 +54,7 @@
                <graphic>
                   <ImageView fitHeight="144.0" fitWidth="256.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../resources/products.png" />
+                        <Image url="@../products.png" />
                      </image>
                   </ImageView>
                </graphic>

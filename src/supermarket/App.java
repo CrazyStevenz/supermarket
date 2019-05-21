@@ -12,7 +12,7 @@ public class App extends Application {
     {
         try
         {
-            Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/Login.fxml"));
 
             Scene scene = new Scene(root, GlobalConstants.SCENE_WIDTH, GlobalConstants.SCENE_HEIGHT);
 
