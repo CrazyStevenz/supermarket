@@ -1,7 +1,6 @@
 package supermarket;
 
 import java.sql.*;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -18,12 +17,9 @@ public class LoginController {
     private static PreparedStatement ps = null;
     private static ResultSet rs = null;
 
-    @FXML
-    TextField usernameField;
-    @FXML
-    PasswordField passwordField;
-    @FXML
-    Label errorLabel;
+    @FXML TextField usernameField;
+    @FXML PasswordField passwordField;
+    @FXML Label errorLabel;
 
     @FXML
     private void login(javafx.event.ActionEvent event) {
@@ -88,26 +84,40 @@ public class LoginController {
             st = conn.createStatement();
 
             st.executeUpdate("DROP TABLE IF EXISTS users CASCADE");
+            st.executeUpdate("DROP TABLE IF EXISTS products CASCADE");
+            st.executeUpdate("DROP TABLE IF EXISTS transactions CASCADE");
 
             String createTableUsers =
                     "CREATE TABLE users (" +
-                        "id serial not null constraint users_pk primary key, " +
-                        "username varchar(20), " +
-                        "password varchar(40), " +
-                        "name varchar(50), " +
-                        "kind int" +
+                        "id SERIAL NOT NULL CONSTRAINT users_pk PRIMARY KEY, " +
+                        "username VARCHAR(20), " +
+                        "password VARCHAR(40), " +
+                        "name VARCHAR(50), " +
+                        "kind INT" +
                     ")";
             st.executeUpdate(createTableUsers);
 
             String createTableProducts =
                     "CREATE TABLE products (" +
-                        "id serial not null constraint products_pk primary key, " +
-                        "name varchar(50) not null, " +
-                        "price float(2) not null, " +
-                        "stock int" +
+                        "id serial NOT NULL constraint products_pk PRIMARY KEY, " +
+                        "name VARCHAR(50) NOT NULL, " +
+                        "price FLOAT(2) NOT NULL, " +
+                        "stock INT" +
                     ");" +
                     "CREATE UNIQUE INDEX products_name_uindex ON products (name)";
             st.executeUpdate(createTableProducts);
+
+            String createTableTransactions =
+                    "CREATE TABLE transactions (" +
+                        "id serial NOT NULL CONSTRAINT transactions_pk PRIMARY KEY, " +
+                        "user_id INT NOT NULL, " +
+                        "product_id INT NOT NULL, " +
+                        "amount INT NOT NULL, " +
+                        "purchase_date DATE" +
+                    ");" +
+                    "ALTER TABLE transactions ADD CONSTRAINT transactions_users_id_fk " +
+                        "FOREIGN KEY (user_id) REFERENCES users ON UPDATE CASCADE ON DELETE CASCADE;";
+            st.executeUpdate(createTableTransactions);
 
             String createSailors =
                 "INSERT INTO users (username, password, name, kind) VALUES ('dimitris', '1234', 'Dimitris Antoniou', 1);" +
@@ -116,7 +126,8 @@ public class LoginController {
 
             String createProducts =
                     "INSERT INTO products (name, price, stock) VALUES ('Bananas', 2.8, 1);" +
-                    "INSERT INTO products (name, price, stock) VALUES ('Feta Cheese', 8.9, 0);";
+                    "INSERT INTO products (name, price, stock) VALUES ('Feta Cheese', 8.9, 0);" +
+                    "INSERT INTO products (name, price, stock) VALUES ('Milk', 0.99, 6);";
             st.executeUpdate(createProducts);
         } catch (Exception e) {
             System.out.println(e.getMessage());
