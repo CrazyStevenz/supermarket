@@ -21,6 +21,10 @@ class User {
         return userInstance;
     }
 
+    void delete() {
+        userInstance = null;
+    }
+
     int getId() {
         return id;
     }
