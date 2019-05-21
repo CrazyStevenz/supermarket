@@ -23,7 +23,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#goToProducts" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            <Button maxHeight="122.0" maxWidth="272.0" minHeight="122.0" minWidth="272.0" mnemonicParsing="false" onAction="#goToProducts" prefHeight="122.0" prefWidth="272.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <graphic>
                   <ImageView fitHeight="144.0" fitWidth="256.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -41,11 +41,11 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Button maxHeight="122.0" maxWidth="272.0" minHeight="122.0" minWidth="272.0" mnemonicParsing="false" onAction="#goToTransactions" prefHeight="122.0" prefWidth="272.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <graphic>
-                  <ImageView fitHeight="144.0" fitWidth="256.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="116.0" fitWidth="133.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../resources/products.png" />
+                        <Image url="@../resources/cart.png" />
                      </image>
                   </ImageView>
                </graphic>

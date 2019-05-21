@@ -36,6 +36,11 @@ class ScreenController
         showStage(event, "Product.fxml", "Products");
     }
 
+    static void goToTransactions(javafx.event.ActionEvent event)
+    {
+        showStage(event, "Transaction.fxml", "Transactions");
+    }
+
     static void logout(javafx.event.ActionEvent event) {
         User.getUserInstance().delete();
         showStage(event, "Login.fxml", "Login");

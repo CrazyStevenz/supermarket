@@ -7,6 +7,13 @@ public class Transaction {
     private int amount;
     private String date;
 
+    public Transaction(int id, int user_id, int product_id, int amount) {
+        this.id = id;
+        this.user_id = user_id;
+        this.product_id = product_id;
+        this.amount = amount;
+    }
+
     public Transaction(int id, int user_id, int product_id, int amount, String date) {
         this.id = id;
         this.user_id = user_id;

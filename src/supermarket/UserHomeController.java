@@ -9,4 +9,10 @@ public class UserHomeController
     {
         ScreenController.goToProducts(event);
     }
+
+    @FXML
+    private void goToTransactions(javafx.event.ActionEvent event)
+    {
+        ScreenController.goToTransactions(event);
+    }
 }
