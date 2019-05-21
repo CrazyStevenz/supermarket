@@ -100,7 +100,7 @@ public class ProductController {
                     errorLabel.setText("The product you want to buy has run out.");
                 } else {
                     String purchaseQuery =
-                            "INSERT INTO transactions (user_id, product_id, amount, purchase_date) VALUES (?, ?, 1, now())";
+                            "INSERT INTO transactions (user_id, product_id, amount, purchase_date) VALUES (?, ?, 1, CURRENT_TIMESTAMP(0))";
                     ps = conn.prepareStatement(purchaseQuery);
                     ps.setInt(1, User.getUserInstance().getId());
                     ps.setInt(2, products[index].getId());
@@ -123,5 +123,15 @@ public class ProductController {
                 errorLabel.setText("Something went wrong.");
             }
         }
+    }
+
+    @FXML
+    private void back(javafx.event.ActionEvent event) {
+        ScreenController.goToUserHome(event);
+    }
+
+    @FXML
+    private void logout(javafx.event.ActionEvent event) {
+        ScreenController.logout(event);
     }
 }
