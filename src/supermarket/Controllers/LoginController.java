@@ -101,7 +101,7 @@ public class LoginController {
 
             String createTableProducts =
                     "CREATE TABLE products (" +
-                        "id serial NOT NULL constraint products_pk PRIMARY KEY, " +
+                        "id SERIAL NOT NULL constraint products_pk PRIMARY KEY, " +
                         "name VARCHAR(50) NOT NULL, " +
                         "price FLOAT(2) NOT NULL, " +
                         "stock INT" +
@@ -111,7 +111,7 @@ public class LoginController {
 
             String createTableTransactions =
                     "CREATE TABLE transactions (" +
-                        "id serial NOT NULL CONSTRAINT transactions_pk PRIMARY KEY, " +
+                        "id SERIAL NOT NULL CONSTRAINT transactions_pk PRIMARY KEY, " +
                         "user_id INT NOT NULL, " +
                         "product_id INT NOT NULL, " +
                         "amount INT NOT NULL, " +
@@ -120,6 +120,16 @@ public class LoginController {
                     "ALTER TABLE transactions ADD CONSTRAINT transactions_users_id_fk " +
                         "FOREIGN KEY (user_id) REFERENCES users ON UPDATE CASCADE ON DELETE CASCADE;";
             st.executeUpdate(createTableTransactions);
+
+            String createTableStores =
+                    "CREATE TABLE stores (" +
+                            "id SERIAL NOT NULL CONSTRAINT stores_pk PRIMARY KEY, " +
+                            "address VARCHAR(50), " +
+                            "phone VARCHAR(20), " +
+                            "work_hours VARCHAR(20) " +
+                        ");" +
+                    "CREATE UNIQUE INDEX stores_phone_uindex ON stores (phone)";
+            st.executeUpdate(createTableStores);
 
             String createSailors =
                     "INSERT INTO users (username, password, name, kind) VALUES ('d', '1234', 'Dimitris Antoniou', 1);" +
@@ -131,6 +141,11 @@ public class LoginController {
                     "INSERT INTO products (name, price, stock) VALUES ('Feta Cheese', 8.9, 0);" +
                     "INSERT INTO products (name, price, stock) VALUES ('Milk', 0.99, 6);";
             st.executeUpdate(createProducts);
+
+            String createStores =
+                    "INSERT INTO stores (address, phone, work_hours) VALUES ('Aristotelous 42', '2310000000', '09:00-21:00');" +
+                    "INSERT INTO stores (address, phone, work_hours) VALUES ('Agias Sofias 128', '2310123456', '07:00-20:00');";
+            st.executeUpdate(createStores);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {

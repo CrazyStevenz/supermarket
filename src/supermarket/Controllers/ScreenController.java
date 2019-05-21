@@ -35,6 +35,10 @@ public class ScreenController {
         showStage(event, "../../resources/fxml/Transaction.fxml", "Transactions");
     }
 
+    public static void goToStores(javafx.event.ActionEvent event) {
+        showStage(event, "../../resources/fxml/Store.fxml", "Stores");
+    }
+
     public static void logout(javafx.event.ActionEvent event) {
         User.getUserInstance().delete();
         showStage(event, "../../resources/fxml/Login.fxml", "Login");

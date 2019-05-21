@@ -32,11 +32,11 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <Button maxHeight="122.0" maxWidth="272.0" minHeight="122.0" minWidth="272.0" mnemonicParsing="false" onAction="#goToStores" prefHeight="122.0" prefWidth="272.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <graphic>
-                  <ImageView fitHeight="144.0" fitWidth="256.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="111.0" fitWidth="165.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/products.png" />
+                        <Image url="@../images/store.png" />
                      </image>
                   </ImageView>
                </graphic>
