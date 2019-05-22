@@ -36,7 +36,7 @@
                   <Insets bottom="5.0" />
                </padding>
             </Label>
-            <Button mnemonicParsing="false" onAction="#purchase" text="Purchase" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Button fx:id="purchaseButton" mnemonicParsing="false" onAction="#purchase" prefWidth="90.0" text="Purchase" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
             <ListView fx:id="productListView" onMouseClicked="#updateDetails" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Product Details" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                <font>
@@ -80,6 +80,9 @@
                   <Insets left="90.0" right="20.0" top="100.0" />
                </GridPane.margin>
             </TextField>
+            <Button fx:id="newProductButton" mnemonicParsing="false" onAction="#newProduct" prefWidth="90.0" text="New Product" visible="false" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" prefWidth="90.0" text="Save" visible="false" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" prefWidth="90.0" text="Delete" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
    </children>

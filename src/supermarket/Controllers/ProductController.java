@@ -28,18 +28,39 @@ public class ProductController {
     @FXML TextField nameTextField;
     @FXML TextField priceTextField;
     @FXML TextField stockTextField;
+    @FXML Button purchaseButton;
+    @FXML Button newProductButton;
+    @FXML Button deleteButton;
+    @FXML Button saveButton;
     @FXML Label errorLabel;
 
     @FXML
     private void loadProducts() {
         errorLabel.setText("");
+        nameTextField.setText("");
+        priceTextField.setText("");
+        stockTextField.setText("");
+
+        if (User.getUserInstance().getKind() == 2) {
+            nameTextField.setEditable(true);
+            priceTextField.setEditable(true);
+            stockTextField.setEditable(true);
+
+            newProductButton.setVisible(true);
+            deleteButton.setVisible(true);
+            saveButton.setVisible(true);
+        } else {
+            purchaseButton.setVisible(true);
+        }
+
         try {
             Class.forName(driverClassName);
             conn = DriverManager.getConnection(url, dbUsername, dbPassword);
 
             String getProductsQuery =
                     "SELECT id, name, price, stock " +
-                    "FROM products";
+                    "FROM products " +
+                    "ORDER BY id";
 
             st = conn.createStatement();
             rs = st.executeQuery(getProductsQuery);
@@ -89,6 +110,9 @@ public class ProductController {
         nameTextField.setText(products[index].getName());
         priceTextField.setText(Float.toString(products[index].getPrice()));
         stockTextField.setText(Integer.toString(products[index].getStock()));
+
+        deleteButton.setDisable(false);
+        saveButton.setDisable(false);
     }
 
     @FXML
@@ -136,6 +160,96 @@ public class ProductController {
                 DbUtils.closeQuietly(conn);
             }
         }
+    }
+
+    @FXML
+    private void newProduct() {
+        try {
+            Class.forName(driverClassName);
+            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+
+            String newProductQuery =
+                    "INSERT INTO products (name, price, stock) VALUES ('New Product', 0, 0)";
+
+            st = conn.createStatement();
+            st.executeUpdate(newProductQuery);
+
+            loadProducts();
+        } catch (SQLException e) {
+            errorLabel.setText("Database failure.");
+        } catch (Exception e) {
+            errorLabel.setText("Something went wrong.");
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(conn);
+        }
+    }
+
+    @FXML
+    private void delete() {
+        try {
+            int index = productListView.getSelectionModel().getSelectedIndex();
+
+            Class.forName(driverClassName);
+            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+
+            String deleteProductQuery =
+                    "DELETE FROM products " +
+                    "WHERE id = ?";
+
+            ps = conn.prepareStatement(deleteProductQuery);
+            ps.setInt(1, products[index].getId());
+            ps.executeUpdate();
+
+            loadProducts();
+        } catch (SQLException e) {
+            errorLabel.setText("Database failure.");
+        } catch (Exception e) {
+            errorLabel.setText("Something went wrong.");
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(conn);
+        }
+
+        deleteButton.setDisable(true);
+        saveButton.setDisable(true);
+    }
+
+    @FXML
+    private void save() {
+        try {
+            int index = productListView.getSelectionModel().getSelectedIndex();
+
+            Class.forName(driverClassName);
+            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+
+            String editProductQuery =
+                    "UPDATE products " +
+                    "SET name = ?, price = ?, stock = ?" +
+                    "WHERE id = ?";
+
+            ps = conn.prepareStatement(editProductQuery);
+            ps.setString(1, nameTextField.getText());
+            ps.setFloat(2, Float.parseFloat(priceTextField.getText()));
+            ps.setInt(3, Integer.parseInt(stockTextField.getText()));
+            ps.setInt(4, products[index].getId());
+            ps.executeUpdate();
+
+            loadProducts();
+        } catch (SQLException e) {
+            errorLabel.setText("Database failure.");
+        } catch (Exception e) {
+            errorLabel.setText("Something went wrong.");
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(conn);
+        }
+
+        deleteButton.setDisable(true);
+        saveButton.setDisable(true);
     }
 
     @FXML
