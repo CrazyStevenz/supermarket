@@ -5,11 +5,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 import supermarket.GlobalConstants;
 import supermarket.Models.User;
 
 public class ScreenController {
-    private static void showStage(javafx.event.ActionEvent event, String filename, String sceneName) {
+    private static void showStage(ActionEvent event, String filename, String sceneName) {
         try {
             Parent par = FXMLLoader.load(ScreenController.class.getResource(filename));
             Scene scene = new Scene(par, GlobalConstants.SCENE_WIDTH, GlobalConstants.SCENE_HEIGHT);
@@ -23,23 +24,27 @@ public class ScreenController {
         }
     }
 
-    public static void goToUserHome(javafx.event.ActionEvent event) {
+    static void goToUserHome(ActionEvent event) {
         showStage(event, "../../resources/fxml/UserHome.fxml", "Homepage");
     }
 
-    public static void goToProducts(javafx.event.ActionEvent event) {
+    static void goToAdminHome(ActionEvent event) {
+        showStage(event, "../../resources/fxml/AdminHome.fxml", "Homepage");
+    }
+
+    static void goToProducts(ActionEvent event) {
         showStage(event, "../../resources/fxml/Product.fxml", "Products");
     }
 
-    public static void goToTransactions(javafx.event.ActionEvent event) {
+    static void goToTransactions(ActionEvent event) {
         showStage(event, "../../resources/fxml/Transaction.fxml", "Transactions");
     }
 
-    public static void goToStores(javafx.event.ActionEvent event) {
+    static void goToStores(ActionEvent event) {
         showStage(event, "../../resources/fxml/Store.fxml", "Stores");
     }
 
-    public static void goToAbout(javafx.event.ActionEvent event) {
+    static void goToAbout(ActionEvent event) {
         showStage(event, "../../resources/fxml/About.fxml", "About");
     }
 
