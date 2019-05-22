@@ -3,8 +3,10 @@ package supermarket.Controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import org.apache.commons.dbutils.DbUtils;
 import supermarket.GlobalConstants;
 import supermarket.Models.Transaction;
@@ -24,12 +26,29 @@ public class TransactionController {
     private static Transaction[] transactions = new Transaction[50];
 
     @FXML ListView<String> transactionListView;
+    @FXML TextField nameTextField;
+    @FXML TextField amountTextField;
+    @FXML TextField dateTextField;
+    @FXML Button saveButton;
+    @FXML Button deleteButton;
     @FXML Label detailsLabel;
     @FXML Label errorLabel;
 
     @FXML
     private void loadTransactions() {
         errorLabel.setText("");
+        nameTextField.setText("");
+        amountTextField.setText("");
+        dateTextField.setText("");
+
+        if (User.getUserInstance().getKind() == 2) {
+            amountTextField.setEditable(true);
+            dateTextField.setEditable(true);
+
+            saveButton.setVisible(true);
+            deleteButton.setVisible(true);
+        }
+
         try {
             Class.forName(driverClassName);
             conn = DriverManager.getConnection(url, dbUsername, dbPassword);
@@ -37,10 +56,12 @@ public class TransactionController {
             String getTransactionsQuery =
                     "SELECT * " +
                     "FROM transactions " +
-                    "WHERE user_id = " + User.getUserInstance().getId();
+                    "WHERE user_id = ? " +
+                    "ORDER BY id";
 
-            st = conn.createStatement();
-            rs = st.executeQuery(getTransactionsQuery);
+            ps = conn.prepareStatement(getTransactionsQuery);
+            ps.setInt(1, User.getUserInstance().getId());
+            rs = ps.executeQuery();
 
             int id, user_id, product_id, amount, i = 0;
             String purchase_date;
@@ -117,11 +138,9 @@ public class TransactionController {
                 productName = rs.getString("name");
             }
 
-            detailsLabel.setText(
-                    "Product Name: " + productName +
-                    "\n\nAmount Bought: " + transactions[index].getAmount() +
-                    "\n\nDate: " + transactions[index].getDate()
-            );
+            nameTextField.setText(productName);
+            amountTextField.setText(Integer.toString(transactions[index].getAmount()));
+            dateTextField.setText(transactions[index].getDate());
         } catch (SQLException e) {
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
@@ -131,6 +150,74 @@ public class TransactionController {
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
         }
+
+        deleteButton.setDisable(false);
+        saveButton.setDisable(false);
+    }
+
+    @FXML
+    private void delete() {
+        try {
+            int index = transactionListView.getSelectionModel().getSelectedIndex();
+
+            Class.forName(driverClassName);
+            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+
+            String deleteProductQuery =
+                    "DELETE FROM transactions " +
+                    "WHERE id = ?";
+
+            ps = conn.prepareStatement(deleteProductQuery);
+            ps.setInt(1, transactions[index].getId());
+            ps.executeUpdate();
+
+            loadTransactions();
+        } catch (SQLException e) {
+            errorLabel.setText("Database failure.");
+        } catch (Exception e) {
+            errorLabel.setText("Something went wrong.");
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(conn);
+        }
+
+        deleteButton.setDisable(true);
+        saveButton.setDisable(true);
+    }
+
+    @FXML
+    private void save() {
+        try {
+            int index = transactionListView.getSelectionModel().getSelectedIndex();
+
+            Class.forName(driverClassName);
+            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+
+            String editProductQuery =
+                    "UPDATE transactions " +
+                    "SET amount = ?, purchase_date = ? " +
+                    "WHERE id = ?";
+
+            ps = conn.prepareStatement(editProductQuery);
+            ps.setInt(1, Integer.parseInt(amountTextField.getText()));
+            ps.setString(2, dateTextField.getText());
+            ps.setInt(3, transactions[index].getId());
+            ps.executeUpdate();
+
+            loadTransactions();
+        } catch (SQLException e) {
+            errorLabel.setText("Database failure.");
+        } catch (Exception e) {
+            errorLabel.setText("Something went wrong.");
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(conn);
+        }
+
+        deleteButton.setDisable(true);
+        saveButton.setDisable(true);
     }
 
     @FXML
