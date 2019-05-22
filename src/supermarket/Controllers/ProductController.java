@@ -4,8 +4,10 @@ import java.sql.*; // TODO import each one needed separately
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import org.apache.commons.dbutils.DbUtils;
 import supermarket.GlobalConstants;
 import supermarket.Models.Product;
@@ -23,7 +25,9 @@ public class ProductController {
     private static Product[] products = new Product[50];
 
     @FXML ListView<String> productListView;
-    @FXML Label detailsLabel;
+    @FXML TextField nameTextField;
+    @FXML TextField priceTextField;
+    @FXML TextField stockTextField;
     @FXML Label errorLabel;
 
     @FXML
@@ -82,11 +86,9 @@ public class ProductController {
     private void updateDetails() {
         int index = productListView.getSelectionModel().getSelectedIndex();
 
-        detailsLabel.setText(
-                "Product Name: " + products[index].getName() +
-                 "\n\nPrice: " + products[index].getPrice() +
-                 "\n\nStock: " + products[index].getStock()
-        );
+        nameTextField.setText(products[index].getName());
+        priceTextField.setText(Float.toString(products[index].getPrice()));
+        stockTextField.setText(Integer.toString(products[index].getStock()));
     }
 
     @FXML
@@ -118,7 +120,9 @@ public class ProductController {
                     ps.setInt(2, products[index].getId());
                     ps.executeUpdate();
 
-                    detailsLabel.setText("");
+                    nameTextField.setText("");
+                    priceTextField.setText("");
+                    stockTextField.setText("");
 
                     loadProducts();
                 }
