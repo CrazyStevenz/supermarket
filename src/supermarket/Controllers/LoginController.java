@@ -66,13 +66,13 @@ public class LoginController {
         }
 
         if (username != null && name != null && !name.equals("") && id != -1) { // TODO Check if null returns ""
-            if (kind != 1 && kind != 2) {
-                kind = 1;
+            new User(id, username, name, kind).login();
+
+            if (kind != 2) {
+                ScreenController.goToUserHome(event);
+            } else {
+                ScreenController.goToAdminHome(event);
             }
-
-            new User(id, username, name, kind);
-
-            ScreenController.goToUserHome(event);
         } else {
             errorLabel.setText("Wrong username or password.");
         }
@@ -88,6 +88,7 @@ public class LoginController {
             st.executeUpdate("DROP TABLE IF EXISTS users CASCADE");
             st.executeUpdate("DROP TABLE IF EXISTS products CASCADE");
             st.executeUpdate("DROP TABLE IF EXISTS transactions CASCADE");
+            st.executeUpdate("DROP TABLE IF EXISTS stores CASCADE");
 
             String createTableUsers =
                     "CREATE TABLE users (" +
@@ -133,7 +134,8 @@ public class LoginController {
 
             String createSailors =
                     "INSERT INTO users (username, password, name, kind) VALUES ('d', '1234', 'Dimitris Antoniou', 1);" +
-                    "INSERT INTO users (username, password, name, kind) VALUES ('kostas', '1234', 'Kostas Athanasiou', 1);";
+                    "INSERT INTO users (username, password, name, kind) VALUES ('kostas', '1234', 'Kostas Athanasiou', 1);" +
+                    "INSERT INTO users (username, password, name, kind) VALUES ('admin', '1234', 'Admin', 2);";
             st.executeUpdate(createSailors);
 
             String createProducts =

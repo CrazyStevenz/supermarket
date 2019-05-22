@@ -27,4 +27,10 @@ public class UserHomeController
     {
         ScreenController.goToAbout(event);
     }
+
+    @FXML
+    private void goToAdminPanel(javafx.event.ActionEvent event)
+    {
+        ScreenController.goToAdminPanel(event);
+    }
 }

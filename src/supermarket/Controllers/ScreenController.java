@@ -48,8 +48,11 @@ public class ScreenController {
         showStage(event, "../../resources/fxml/About.fxml", "About");
     }
 
-    public static void logout(javafx.event.ActionEvent event) {
-        User.getUserInstance().delete();
+    static void goToAdminPanel(ActionEvent event) {
+        showStage(event, "../../resources/fxml/Admin.fxml", "Administrator Panel");
+    }
+
+    public static void logout(ActionEvent event) {
         showStage(event, "../../resources/fxml/Login.fxml", "Login");
     }
 }

@@ -13,16 +13,14 @@ public class User {
         this.username = username;
         this.name = name;
         this.kind = kind;
+    }
 
+    public void login() {
         userInstance = this;
     }
 
     public static User getUserInstance() {
         return userInstance;
-    }
-
-    public void delete() {
-        userInstance = null;
     }
 
     public int getId() {
