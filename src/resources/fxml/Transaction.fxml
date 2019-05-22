@@ -78,7 +78,7 @@
                </GridPane.margin>
             </TextField>
             <Button fx:id="saveButton" disable="true" mnemonicParsing="false" onAction="#save" prefWidth="90.0" text="Save" visible="false" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-            <Button fx:id="deleteButton" disable="true" mnemonicParsing="false" prefWidth="90.0" text="Delete" visible="false" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Button fx:id="deleteButton" disable="true" mnemonicParsing="false" onAction="#delete" prefWidth="90.0" text="Delete" visible="false" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
    </children>

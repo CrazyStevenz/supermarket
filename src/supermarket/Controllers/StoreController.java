@@ -97,13 +97,16 @@ public class StoreController {
     @FXML
     private void updateDetails() {
         int index = storeListView.getSelectionModel().getSelectedIndex();
+        if (index != -1) {
+            addressTextField.setText(stores[index].getAddress());
+            phoneTextField.setText(stores[index].getPhone());
+            hoursTextField.setText(stores[index].getWorkHours());
 
-        addressTextField.setText(stores[index].getAddress());
-        phoneTextField.setText(stores[index].getPhone());
-        hoursTextField.setText(stores[index].getWorkHours());
-
-        deleteButton.setDisable(false);
-        saveButton.setDisable(false);
+            deleteButton.setDisable(false);
+            saveButton.setDisable(false);
+        } else {
+            errorLabel.setText("Refresh the list first");
+        }
     }
 
     @FXML

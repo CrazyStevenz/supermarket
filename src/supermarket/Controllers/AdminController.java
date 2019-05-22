@@ -176,13 +176,16 @@ public class AdminController {
     @FXML
     private void updateDetails() {
         int index = userListView.getSelectionModel().getSelectedIndex();
+        if (index != -1) {
+            nameTextField.setText(users[index].getName());
+            usernameTextField.setText(users[index].getUsername());
+            kindTextField.setText(Integer.toString(users[index].getKind()));
 
-        nameTextField.setText(users[index].getName());
-        usernameTextField.setText(users[index].getUsername());
-        kindTextField.setText(Integer.toString(users[index].getKind()));
-
-        deleteButton.setDisable(false);
-        saveButton.setDisable(false);
+            deleteButton.setDisable(false);
+            saveButton.setDisable(false);
+        } else {
+            errorLabel.setText("Refresh the list first");
+        }
     }
 
     @FXML

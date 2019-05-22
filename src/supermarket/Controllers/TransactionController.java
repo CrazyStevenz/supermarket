@@ -118,41 +118,45 @@ public class TransactionController {
     @FXML
     private void updateDetails() {
         errorLabel.setText("");
+
         int index = transactionListView.getSelectionModel().getSelectedIndex();
+        if (index != -1) {
+            try {
+                Class.forName(driverClassName);
+                conn = DriverManager.getConnection(url, dbUsername, dbPassword);
 
-        try {
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+                String getProductNameQuery =
+                        "SELECT name " +
+                        "FROM products " +
+                        "WHERE id = " + transactions[index].getProduct_id();
 
-            String getProductNameQuery =
-                    "SELECT name " +
-                    "FROM products " +
-                    "WHERE id = " + transactions[index].getProduct_id();
+                st = conn.createStatement();
+                rs = st.executeQuery(getProductNameQuery);
 
-            st = conn.createStatement();
-            rs = st.executeQuery(getProductNameQuery);
+                String productName = "";
 
-            String productName = "";
+                while (rs.next()) {
+                    productName = rs.getString("name");
+                }
 
-            while (rs.next()) {
-                productName = rs.getString("name");
+                nameTextField.setText(productName);
+                amountTextField.setText(Integer.toString(transactions[index].getAmount()));
+                dateTextField.setText(transactions[index].getDate());
+            } catch (SQLException e) {
+                errorLabel.setText("Database failure.");
+            } catch (Exception e) {
+                errorLabel.setText("Something went wrong.");
+            } finally {
+                DbUtils.closeQuietly(rs);
+                DbUtils.closeQuietly(ps);
+                DbUtils.closeQuietly(conn);
             }
 
-            nameTextField.setText(productName);
-            amountTextField.setText(Integer.toString(transactions[index].getAmount()));
-            dateTextField.setText(transactions[index].getDate());
-        } catch (SQLException e) {
-            errorLabel.setText("Database failure.");
-        } catch (Exception e) {
-            errorLabel.setText("Something went wrong.");
-        } finally {
-            DbUtils.closeQuietly(rs);
-            DbUtils.closeQuietly(ps);
-            DbUtils.closeQuietly(conn);
+            deleteButton.setDisable(false);
+            saveButton.setDisable(false);
+        } else {
+            errorLabel.setText("Refresh the list first");
         }
-
-        deleteButton.setDisable(false);
-        saveButton.setDisable(false);
     }
 
     @FXML

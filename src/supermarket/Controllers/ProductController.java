@@ -106,13 +106,16 @@ public class ProductController {
     @FXML
     private void updateDetails() {
         int index = productListView.getSelectionModel().getSelectedIndex();
+        if (index != -1) {
+            nameTextField.setText(products[index].getName());
+            priceTextField.setText(Float.toString(products[index].getPrice()));
+            stockTextField.setText(Integer.toString(products[index].getStock()));
 
-        nameTextField.setText(products[index].getName());
-        priceTextField.setText(Float.toString(products[index].getPrice()));
-        stockTextField.setText(Integer.toString(products[index].getStock()));
-
-        deleteButton.setDisable(false);
-        saveButton.setDisable(false);
+            deleteButton.setDisable(false);
+            saveButton.setDisable(false);
+        } else {
+            errorLabel.setText("Refresh the list first");
+        }
     }
 
     @FXML
