@@ -75,8 +75,13 @@
                   <Insets left="90.0" right="20.0" top="100.0" />
                </GridPane.margin>
             </TextField>
-            <Button mnemonicParsing="false" onAction="#newUser" text="New User" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-            <Button mnemonicParsing="false" onAction="#save" text="Save" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Button mnemonicParsing="false" onAction="#newUser" prefHeight="25.0" prefWidth="70.0" text="New User" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Button fx:id="saveButton" disable="true" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="70.0" text="Save" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Button fx:id="deleteButton" disable="true" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="70.0" text="Delete" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Button>
          </children>
       </GridPane>
    </children>

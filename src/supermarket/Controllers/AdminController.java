@@ -3,6 +3,7 @@ package supermarket.Controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -27,6 +28,8 @@ public class AdminController {
     @FXML TextField nameTextField;
     @FXML TextField usernameTextField;
     @FXML TextField kindTextField;
+    @FXML Button deleteButton;
+    @FXML Button saveButton;
     @FXML Label errorLabel;
 
     @FXML
@@ -134,6 +137,40 @@ public class AdminController {
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
         }
+
+        deleteButton.setDisable(true);
+        saveButton.setDisable(true);
+    }
+
+    @FXML
+    private void delete() {
+        try {
+            int index = userListView.getSelectionModel().getSelectedIndex();
+
+            Class.forName(driverClassName);
+            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+
+            String deleteUserQuery =
+                    "DELETE FROM users " +
+                    "WHERE id = ?";
+
+            ps = conn.prepareStatement(deleteUserQuery);
+            ps.setInt(1, users[index].getId());
+            ps.executeUpdate();
+
+            loadUsers();
+        } catch (SQLException e) {
+            errorLabel.setText("Database failure.");
+        } catch (Exception e) {
+            errorLabel.setText("Something went wrong.");
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(conn);
+        }
+
+        deleteButton.setDisable(true);
+        saveButton.setDisable(true);
     }
 
     @FXML
@@ -143,6 +180,9 @@ public class AdminController {
         nameTextField.setText(users[index].getName());
         usernameTextField.setText(users[index].getUsername());
         kindTextField.setText(Integer.toString(users[index].getKind()));
+
+        deleteButton.setDisable(false);
+        saveButton.setDisable(false);
     }
 
     @FXML
