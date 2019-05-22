@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import org.apache.commons.dbutils.DbUtils;
 import supermarket.GlobalConstants;
 import supermarket.Models.User;
@@ -23,12 +24,18 @@ public class AdminController {
     private static User[] users = new User[50];
 
     @FXML ListView<String> userListView;
-    @FXML Label detailsLabel;
+    @FXML TextField nameTextField;
+    @FXML TextField usernameTextField;
+    @FXML TextField kindTextField;
     @FXML Label errorLabel;
 
     @FXML
     private void loadUsers() {
         errorLabel.setText("");
+        nameTextField.setText("");
+        usernameTextField.setText("");
+        kindTextField.setText("");
+
         try {
             Class.forName(driverClassName);
             conn = DriverManager.getConnection(url, dbUsername, dbPassword);
@@ -73,14 +80,36 @@ public class AdminController {
     }
 
     @FXML
+    private void newUser() {
+        try {
+            Class.forName(driverClassName);
+            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+
+            String newUserQuery =
+                    "INSERT INTO users (username, password, name, kind) VALUES ('newuser', '1234', 'New User', 1)";
+
+            st = conn.createStatement();
+            st.executeUpdate(newUserQuery);
+
+            loadUsers();
+        } catch (SQLException e) {
+            errorLabel.setText("Database failure.");
+        } catch (Exception e) {
+            errorLabel.setText("Something went wrong.");
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(conn);
+        }
+    }
+
+    @FXML
     private void updateDetails() {
         int index = userListView.getSelectionModel().getSelectedIndex();
 
-        detailsLabel.setText(
-                "Name: " + users[index].getName() +
-                "\n\nUsername: " + users[index].getUsername() +
-                "\n\nKind: " + users[index].getId()
-        );
+        nameTextField.setText(users[index].getName());
+        usernameTextField.setText(users[index].getUsername());
+        kindTextField.setText(Integer.toString(users[index].getKind()));
     }
 
     @FXML
