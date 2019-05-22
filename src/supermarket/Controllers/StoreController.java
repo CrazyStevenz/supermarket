@@ -3,12 +3,14 @@ package supermarket.Controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import org.apache.commons.dbutils.DbUtils;
 import supermarket.GlobalConstants;
 import supermarket.Models.Store;
-import supermarket.Models.Transaction;
+import supermarket.Models.User;
 
 import java.sql.*;
 
@@ -24,19 +26,37 @@ public class StoreController {
     private static Store[] stores = new Store[50];
 
     @FXML ListView<String> storeListView;
+    @FXML TextField addressTextField;
+    @FXML TextField phoneTextField;
+    @FXML TextField hoursTextField;
+    @FXML Button newStoreButton;
+    @FXML Button deleteButton;
+    @FXML Button saveButton;
     @FXML Label detailsLabel;
     @FXML Label errorLabel;
 
     @FXML
     private void loadTransactions() {
         errorLabel.setText("");
+
+        if (User.getUserInstance().getKind() == 2) {
+            addressTextField.setEditable(true);
+            phoneTextField.setEditable(true);
+            hoursTextField.setEditable(true);
+
+            newStoreButton.setVisible(true);
+            deleteButton.setVisible(true);
+            saveButton.setVisible(true);
+        }
+
         try {
             Class.forName(driverClassName);
             conn = DriverManager.getConnection(url, dbUsername, dbPassword);
 
             String getStoresQuery =
                     "SELECT * " +
-                            "FROM stores";
+                    "FROM stores " +
+                    "ORDER BY id";
 
             st = conn.createStatement();
             rs = st.executeQuery(getStoresQuery);
@@ -78,11 +98,103 @@ public class StoreController {
     private void updateDetails() {
         int index = storeListView.getSelectionModel().getSelectedIndex();
 
-        detailsLabel.setText(
-                "Address: " + stores[index].getAddress() +
-                "\n\nPhone: " + stores[index].getPhone() +
-                "\n\nWork Hours: " + stores[index].getWorkHours()
-        );
+        addressTextField.setText(stores[index].getAddress());
+        phoneTextField.setText(stores[index].getPhone());
+        hoursTextField.setText(stores[index].getWorkHours());
+
+        deleteButton.setDisable(false);
+        saveButton.setDisable(false);
+    }
+
+    @FXML
+    private void newStore() {
+        try {
+            Class.forName(driverClassName);
+            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+
+            String newStoreQuery =
+                    "INSERT INTO stores (address, phone, work_hours) " +
+                    "VALUES ('New Store Address', '0000000000', '00:00-00:00')";
+
+            st = conn.createStatement();
+            st.executeUpdate(newStoreQuery);
+
+            loadTransactions();
+        } catch (SQLException e) {
+            errorLabel.setText("Database failure.");
+        } catch (Exception e) {
+            errorLabel.setText("Something went wrong.");
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(conn);
+        }
+    }
+
+    @FXML
+    private void delete() {
+        try {
+            int index = storeListView.getSelectionModel().getSelectedIndex();
+
+            Class.forName(driverClassName);
+            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+
+            String deleteStoreQuery =
+                    "DELETE FROM stores " +
+                    "WHERE id = ?";
+
+            ps = conn.prepareStatement(deleteStoreQuery);
+            ps.setInt(1, stores[index].getId());
+            ps.executeUpdate();
+
+            loadTransactions();
+        } catch (SQLException e) {
+            errorLabel.setText("Database failure.");
+        } catch (Exception e) {
+            errorLabel.setText("Something went wrong.");
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(conn);
+        }
+
+        deleteButton.setDisable(true);
+        saveButton.setDisable(true);
+    }
+
+    @FXML
+    private void save() {
+        try {
+            int index = storeListView.getSelectionModel().getSelectedIndex();
+
+            Class.forName(driverClassName);
+            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+
+            String editStoreQuery =
+                    "UPDATE stores " +
+                    "SET address = ?, phone = ?, work_hours = ?" +
+                    "WHERE id = ?";
+
+            ps = conn.prepareStatement(editStoreQuery);
+            ps.setString(1, addressTextField.getText());
+            ps.setString(2, phoneTextField.getText());
+            ps.setString(3, hoursTextField.getText());
+            ps.setInt(4, stores[index].getId());
+            ps.executeUpdate();
+
+            loadTransactions();
+        } catch (SQLException e) {
+            errorLabel.setText("Database failure.");
+        } catch (Exception e) {
+            errorLabel.setText("Something went wrong.");
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(conn);
+        }
+
+        deleteButton.setDisable(true);
+        saveButton.setDisable(true);
     }
 
     @FXML
