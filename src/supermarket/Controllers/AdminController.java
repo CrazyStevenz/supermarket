@@ -42,7 +42,8 @@ public class AdminController {
 
             String getUsersQuery =
                     "SELECT id, username, name, kind " +
-                    "FROM users";
+                    "FROM users " +
+                    "ORDER BY id";
 
             st = conn.createStatement();
             rs = st.executeQuery(getUsersQuery);
@@ -90,6 +91,38 @@ public class AdminController {
 
             st = conn.createStatement();
             st.executeUpdate(newUserQuery);
+
+            loadUsers();
+        } catch (SQLException e) {
+            errorLabel.setText("Database failure.");
+        } catch (Exception e) {
+            errorLabel.setText("Something went wrong.");
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(conn);
+        }
+    }
+
+    @FXML
+    private void save() {
+        try {
+            int index = userListView.getSelectionModel().getSelectedIndex();
+
+            Class.forName(driverClassName);
+            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+
+            String editUserQuery =
+                    "UPDATE users " +
+                    "SET name = ?, username = ?, kind = ?" +
+                    "WHERE id = ?";
+
+            ps = conn.prepareStatement(editUserQuery);
+            ps.setString(1, nameTextField.getText());
+            ps.setString(2, usernameTextField.getText());
+            ps.setInt(3, Integer.parseInt(kindTextField.getText()));
+            ps.setInt(4, users[index].getId());
+            ps.executeUpdate();
 
             loadUsers();
         } catch (SQLException e) {

@@ -76,6 +76,7 @@
                </GridPane.margin>
             </TextField>
             <Button mnemonicParsing="false" onAction="#newUser" text="New User" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Button mnemonicParsing="false" onAction="#save" text="Save" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
    </children>
