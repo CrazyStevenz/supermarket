@@ -159,7 +159,7 @@ public class ProductController {
                     loadProducts();
                 }
 
-                logger.log(Level.WARNING,
+                logger.log(Level.INFO,
                         "User " + User.getUserInstance().getName() +
                         " with id " + User.getUserInstance().getId() +
                         " bought a product");
@@ -196,7 +196,7 @@ public class ProductController {
 
             loadProducts();
 
-            logger.log(Level.WARNING, "A product was added.");
+            logger.log(Level.INFO, "A product was added.");
         } catch (SQLException e) {
             logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
@@ -232,9 +232,13 @@ public class ProductController {
             ps.executeUpdate();
 
             loadProducts();
+
+            logger.log(Level.INFO, "A product was deleted.");
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Something went wrong.");
         } finally {
             DbUtils.closeQuietly(rs);
@@ -268,10 +272,12 @@ public class ProductController {
 
             loadProducts();
 
-            logger.log(Level.WARNING, "A product was deleted.");
+            logger.log(Level.INFO, "A product was edited.");
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Something went wrong.");
         } finally {
             DbUtils.closeQuietly(rs);
