@@ -8,17 +8,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import org.apache.commons.dbutils.DbUtils;
-import supermarket.GlobalConstants;
 import supermarket.Models.Transaction;
 import supermarket.Models.User;
-
 import java.sql.*;
 
 public class TransactionController {
-    private static String driverClassName = "org.postgresql.Driver";
-    private static String url = GlobalConstants.DB_URL;
-    private static String dbUsername = GlobalConstants.DB_USERNAME;
-    private static String dbPassword = GlobalConstants.DB_PASSWORD;
     private static Connection conn = null;
     private static Statement st = null;
     private static PreparedStatement ps = null;
@@ -50,8 +44,7 @@ public class TransactionController {
         }
 
         try {
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String getTransactionsQuery =
                     "SELECT * " +
@@ -122,8 +115,7 @@ public class TransactionController {
         int index = transactionListView.getSelectionModel().getSelectedIndex();
         if (index != -1) {
             try {
-                Class.forName(driverClassName);
-                conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+                conn = DatabaseController.getConnection();
 
                 String getProductNameQuery =
                         "SELECT name " +
@@ -164,8 +156,7 @@ public class TransactionController {
         try {
             int index = transactionListView.getSelectionModel().getSelectedIndex();
 
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String deleteProductQuery =
                     "DELETE FROM transactions " +
@@ -195,8 +186,7 @@ public class TransactionController {
         try {
             int index = transactionListView.getSelectionModel().getSelectedIndex();
 
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String editProductQuery =
                     "UPDATE transactions " +

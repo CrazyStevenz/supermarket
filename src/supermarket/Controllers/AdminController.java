@@ -8,16 +8,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import org.apache.commons.dbutils.DbUtils;
-import supermarket.GlobalConstants;
 import supermarket.Models.User;
-
 import java.sql.*;
 
 public class AdminController {
-    private static String driverClassName = "org.postgresql.Driver";
-    private static String url = GlobalConstants.DB_URL;
-    private static String dbUsername = GlobalConstants.DB_USERNAME;
-    private static String dbPassword = GlobalConstants.DB_PASSWORD;
     private static Connection conn = null;
     private static Statement st = null;
     private static PreparedStatement ps = null;
@@ -40,8 +34,7 @@ public class AdminController {
         kindTextField.setText("");
 
         try {
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String getUsersQuery =
                     "SELECT id, username, name, kind " +
@@ -86,8 +79,7 @@ public class AdminController {
     @FXML
     private void newUser() {
         try {
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String newUserQuery =
                     "INSERT INTO users (username, password, name, kind) VALUES ('newuser', '1234', 'New User', 1)";
@@ -112,8 +104,7 @@ public class AdminController {
         try {
             int index = userListView.getSelectionModel().getSelectedIndex();
 
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String editUserQuery =
                     "UPDATE users " +
@@ -147,8 +138,7 @@ public class AdminController {
         try {
             int index = userListView.getSelectionModel().getSelectedIndex();
 
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String deleteUserQuery =
                     "DELETE FROM users " +

@@ -8,17 +8,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import org.apache.commons.dbutils.DbUtils;
-import supermarket.GlobalConstants;
 import supermarket.Models.Store;
 import supermarket.Models.User;
-
 import java.sql.*;
 
 public class StoreController {
-    private static String driverClassName = "org.postgresql.Driver";
-    private static String url = GlobalConstants.DB_URL;
-    private static String dbUsername = GlobalConstants.DB_USERNAME;
-    private static String dbPassword = GlobalConstants.DB_PASSWORD;
     private static Connection conn = null;
     private static Statement st = null;
     private static PreparedStatement ps = null;
@@ -50,8 +44,7 @@ public class StoreController {
         }
 
         try {
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String getStoresQuery =
                     "SELECT * " +
@@ -112,8 +105,7 @@ public class StoreController {
     @FXML
     private void newStore() {
         try {
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String newStoreQuery =
                     "INSERT INTO stores (address, phone, work_hours) " +
@@ -139,8 +131,7 @@ public class StoreController {
         try {
             int index = storeListView.getSelectionModel().getSelectedIndex();
 
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String deleteStoreQuery =
                     "DELETE FROM stores " +
@@ -170,8 +161,7 @@ public class StoreController {
         try {
             int index = storeListView.getSelectionModel().getSelectedIndex();
 
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String editStoreQuery =
                     "UPDATE stores " +

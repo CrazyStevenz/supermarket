@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import supermarket.GlobalConstants;
-import supermarket.Models.User;
 
 public class ScreenController {
     private static void showStage(ActionEvent event, String filename, String sceneName) {

@@ -1,6 +1,10 @@
 package supermarket.Controllers;
 
 import java.sql.*; // TODO import each one needed separately
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,15 +13,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import org.apache.commons.dbutils.DbUtils;
-import supermarket.GlobalConstants;
 import supermarket.Models.Product;
 import supermarket.Models.User;
 
 public class ProductController {
-    private static String driverClassName = "org.postgresql.Driver";
-    private static String url = GlobalConstants.DB_URL;
-    private static String dbUsername = GlobalConstants.DB_USERNAME;
-    private static String dbPassword = GlobalConstants.DB_PASSWORD;
+    private final static Logger logger = Logger.getLogger(ProductController.class.getName());
+    private static FileHandler fh;
     private static Connection conn = null;
     private static Statement st = null;
     private static PreparedStatement ps = null;
@@ -54,8 +55,7 @@ public class ProductController {
         }
 
         try {
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String getProductsQuery =
                     "SELECT id, name, price, stock " +
@@ -126,15 +126,20 @@ public class ProductController {
             errorLabel.setText("Select a product first.");
         } else {
             try {
-                Class.forName(driverClassName);
-                conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+                fh = new FileHandler("..\\supermarket\\logfile.log", true);
+                logger.addHandler(fh);
+                SimpleFormatter formatter = new SimpleFormatter();
+                fh.setFormatter(formatter);
+
+                conn = DatabaseController.getConnection();
 
                 int productStock = products[index].getStock();
                 if (productStock < 1) {
                     errorLabel.setText("The product you want to buy has run out.");
                 } else {
                     String purchaseQuery =
-                            "INSERT INTO transactions (user_id, product_id, amount, purchase_date) VALUES (?, ?, 1, CURRENT_TIMESTAMP(0))";
+                            "INSERT INTO transactions (user_id, product_id, amount, purchase_date) " +
+                            "VALUES (?, ?, 1, CURRENT_TIMESTAMP(0))";
                     ps = conn.prepareStatement(purchaseQuery);
                     ps.setInt(1, User.getUserInstance().getId());
                     ps.setInt(2, products[index].getId());
@@ -153,14 +158,22 @@ public class ProductController {
 
                     loadProducts();
                 }
+
+                logger.log(Level.WARNING,
+                        "User " + User.getUserInstance().getName() +
+                        " with id " + User.getUserInstance().getId() +
+                        " bought a product");
             } catch (SQLException e) {
+                logger.log(Level.SEVERE, e.getMessage());
                 errorLabel.setText("Database failure.");
             } catch (Exception e) {
+                logger.log(Level.SEVERE, e.getMessage());
                 errorLabel.setText("Something went wrong.");
             } finally {
                 DbUtils.closeQuietly(rs);
                 DbUtils.closeQuietly(ps);
                 DbUtils.closeQuietly(conn);
+                fh.close();
             }
         }
     }
@@ -168,8 +181,12 @@ public class ProductController {
     @FXML
     private void newProduct() {
         try {
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+
+            conn = DatabaseController.getConnection();
 
             String newProductQuery =
                     "INSERT INTO products (name, price, stock) VALUES ('New Product', 0, 0)";
@@ -178,24 +195,33 @@ public class ProductController {
             st.executeUpdate(newProductQuery);
 
             loadProducts();
+
+            logger.log(Level.WARNING, "A product was added.");
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Something went wrong.");
         } finally {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
+            fh.close();
         }
     }
 
     @FXML
     private void delete() {
         try {
+            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+
             int index = productListView.getSelectionModel().getSelectedIndex();
 
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String deleteProductQuery =
                     "DELETE FROM products " +
@@ -214,6 +240,7 @@ public class ProductController {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
+            fh.close();
         }
 
         deleteButton.setDisable(true);
@@ -225,8 +252,7 @@ public class ProductController {
         try {
             int index = productListView.getSelectionModel().getSelectedIndex();
 
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             String editProductQuery =
                     "UPDATE products " +
@@ -241,6 +267,8 @@ public class ProductController {
             ps.executeUpdate();
 
             loadProducts();
+
+            logger.log(Level.WARNING, "A product was deleted.");
         } catch (SQLException e) {
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
@@ -249,6 +277,7 @@ public class ProductController {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
+            fh.close();
         }
 
         deleteButton.setDisable(true);

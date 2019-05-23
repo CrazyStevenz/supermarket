@@ -6,14 +6,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.apache.commons.dbutils.DbUtils;
-import supermarket.GlobalConstants;
 import supermarket.Models.User;
 
 public class LoginController {
-    private static String driverClassName = "org.postgresql.Driver";
-    private static String url = GlobalConstants.DB_URL;
-    private static String dbUsername = GlobalConstants.DB_USERNAME;
-    private static String dbPassword = GlobalConstants.DB_PASSWORD;
     private static Connection conn = null;
     private static Statement st = null;
     private static PreparedStatement ps = null;
@@ -29,8 +24,7 @@ public class LoginController {
         String username = null, name = null;
 
         try {
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
 
             username = usernameField.getText();
             String password = passwordField.getText();
@@ -81,8 +75,7 @@ public class LoginController {
     @FXML
     private void create() {
         try {
-            Class.forName(driverClassName);
-            conn = DriverManager.getConnection(url, dbUsername, dbPassword);
+            conn = DatabaseController.getConnection();
             st = conn.createStatement();
 
             st.executeUpdate("DROP TABLE IF EXISTS users CASCADE");
