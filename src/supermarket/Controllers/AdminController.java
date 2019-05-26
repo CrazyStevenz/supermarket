@@ -10,8 +10,14 @@ import javafx.scene.control.TextField;
 import org.apache.commons.dbutils.DbUtils;
 import supermarket.Models.User;
 import java.sql.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class AdminController {
+    private final static Logger logger = Logger.getLogger(ProductController.class.getName());
+    private static FileHandler fh;
     private static Connection conn = null;
     private static Statement st = null;
     private static PreparedStatement ps = null;
@@ -79,6 +85,11 @@ public class AdminController {
     @FXML
     private void newUser() {
         try {
+            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+
             conn = DatabaseController.getConnection();
 
             String newUserQuery =
@@ -87,21 +98,31 @@ public class AdminController {
             st = conn.createStatement();
             st.executeUpdate(newUserQuery);
 
+            logger.log(Level.INFO, "A user was added.");
+
             loadUsers();
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Something went wrong.");
         } finally {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
+            fh.close();
         }
     }
 
     @FXML
     private void save() {
         try {
+            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+
             int index = userListView.getSelectionModel().getSelectedIndex();
 
             conn = DatabaseController.getConnection();
@@ -118,15 +139,20 @@ public class AdminController {
             ps.setInt(4, users[index].getId());
             ps.executeUpdate();
 
+            logger.log(Level.INFO, "A user was edited.");
+
             loadUsers();
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Something went wrong.");
         } finally {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
+            fh.close();
         }
 
         deleteButton.setDisable(true);
@@ -136,6 +162,11 @@ public class AdminController {
     @FXML
     private void delete() {
         try {
+            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+
             int index = userListView.getSelectionModel().getSelectedIndex();
 
             conn = DatabaseController.getConnection();
@@ -148,15 +179,20 @@ public class AdminController {
             ps.setInt(1, users[index].getId());
             ps.executeUpdate();
 
+            logger.log(Level.INFO, "A user was deleted.");
+
             loadUsers();
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Something went wrong.");
         } finally {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
+            fh.close();
         }
 
         deleteButton.setDisable(true);
