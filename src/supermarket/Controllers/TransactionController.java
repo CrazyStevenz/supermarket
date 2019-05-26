@@ -200,6 +200,11 @@ public class TransactionController {
     @FXML
     private void save() {
         try {
+            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+
             int index = transactionListView.getSelectionModel().getSelectedIndex();
 
             conn = DatabaseController.getConnection();

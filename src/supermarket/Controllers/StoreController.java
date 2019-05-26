@@ -11,8 +11,14 @@ import org.apache.commons.dbutils.DbUtils;
 import supermarket.Models.Store;
 import supermarket.Models.User;
 import java.sql.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class StoreController {
+    private final static Logger logger = Logger.getLogger(ProductController.class.getName());
+    private static FileHandler fh;
     private static Connection conn = null;
     private static Statement st = null;
     private static PreparedStatement ps = null;
@@ -105,6 +111,11 @@ public class StoreController {
     @FXML
     private void newStore() {
         try {
+            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+
             conn = DatabaseController.getConnection();
 
             String newStoreQuery =
@@ -114,21 +125,31 @@ public class StoreController {
             st = conn.createStatement();
             st.executeUpdate(newStoreQuery);
 
+            logger.log(Level.INFO, "A store was added.");
+
             loadTransactions();
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Something went wrong.");
         } finally {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
+            fh.close();
         }
     }
 
     @FXML
     private void delete() {
         try {
+            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+
             int index = storeListView.getSelectionModel().getSelectedIndex();
 
             conn = DatabaseController.getConnection();
@@ -141,15 +162,20 @@ public class StoreController {
             ps.setInt(1, stores[index].getId());
             ps.executeUpdate();
 
+            logger.log(Level.INFO, "A store was deleted.");
+
             loadTransactions();
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Something went wrong.");
         } finally {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
+            fh.close();
         }
 
         deleteButton.setDisable(true);
@@ -159,6 +185,11 @@ public class StoreController {
     @FXML
     private void save() {
         try {
+            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+
             int index = storeListView.getSelectionModel().getSelectedIndex();
 
             conn = DatabaseController.getConnection();
@@ -175,15 +206,20 @@ public class StoreController {
             ps.setInt(4, stores[index].getId());
             ps.executeUpdate();
 
+            logger.log(Level.INFO, "A store was edited.");
+
             loadTransactions();
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Something went wrong.");
         } finally {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
+            fh.close();
         }
 
         deleteButton.setDisable(true);
