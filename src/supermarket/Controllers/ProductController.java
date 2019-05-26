@@ -152,17 +152,17 @@ public class ProductController {
                     ps.setInt(2, products[index].getId());
                     ps.executeUpdate();
 
+                    logger.log(Level.INFO,
+                            "User " + User.getUserInstance().getName() +
+                            " with id " + User.getUserInstance().getId() +
+                            " bought a product");
+
                     nameTextField.setText("");
                     priceTextField.setText("");
                     stockTextField.setText("");
 
                     loadProducts();
                 }
-
-                logger.log(Level.INFO,
-                        "User " + User.getUserInstance().getName() +
-                        " with id " + User.getUserInstance().getId() +
-                        " bought a product");
             } catch (SQLException e) {
                 logger.log(Level.SEVERE, e.getMessage());
                 errorLabel.setText("Database failure.");
@@ -194,9 +194,9 @@ public class ProductController {
             st = conn.createStatement();
             st.executeUpdate(newProductQuery);
 
-            loadProducts();
-
             logger.log(Level.INFO, "A product was added.");
+
+            loadProducts();
         } catch (SQLException e) {
             logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
@@ -231,9 +231,9 @@ public class ProductController {
             ps.setInt(1, products[index].getId());
             ps.executeUpdate();
 
-            loadProducts();
-
             logger.log(Level.INFO, "A product was deleted.");
+
+            loadProducts();
         } catch (SQLException e) {
             logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
@@ -270,9 +270,9 @@ public class ProductController {
             ps.setInt(4, products[index].getId());
             ps.executeUpdate();
 
-            loadProducts();
-
             logger.log(Level.INFO, "A product was edited.");
+
+            loadProducts();
         } catch (SQLException e) {
             logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");

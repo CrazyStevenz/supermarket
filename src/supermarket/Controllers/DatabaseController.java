@@ -1,7 +1,6 @@
 package supermarket.Controllers;
 
 import supermarket.GlobalConstants;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 
