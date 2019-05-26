@@ -11,8 +11,14 @@ import org.apache.commons.dbutils.DbUtils;
 import supermarket.Models.Transaction;
 import supermarket.Models.User;
 import java.sql.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class TransactionController {
+    private final static Logger logger = Logger.getLogger(ProductController.class.getName());
+    private static FileHandler fh;
     private static Connection conn = null;
     private static Statement st = null;
     private static PreparedStatement ps = null;
@@ -154,6 +160,11 @@ public class TransactionController {
     @FXML
     private void delete() {
         try {
+            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+
             int index = transactionListView.getSelectionModel().getSelectedIndex();
 
             conn = DatabaseController.getConnection();
@@ -166,15 +177,20 @@ public class TransactionController {
             ps.setInt(1, transactions[index].getId());
             ps.executeUpdate();
 
+            logger.log(Level.INFO, "A transaction was deleted.");
+
             loadTransactions();
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Something went wrong.");
         } finally {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
+            fh.close();
         }
 
         deleteButton.setDisable(true);
@@ -199,15 +215,20 @@ public class TransactionController {
             ps.setInt(3, transactions[index].getId());
             ps.executeUpdate();
 
+            logger.log(Level.INFO, "A transaction was edited.");
+
             loadTransactions();
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Database failure.");
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
             errorLabel.setText("Something went wrong.");
         } finally {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
+            fh.close();
         }
 
         deleteButton.setDisable(true);
