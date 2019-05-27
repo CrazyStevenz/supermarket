@@ -2,8 +2,12 @@ package supermarket.Controllers;
 
 import javafx.fxml.FXML;
 
-public class UserHomeController
-{
+public class UserHomeController {
+    @FXML
+    private void logout(javafx.event.ActionEvent event) {
+        ScreenController.logout(event);
+    }
+
     @FXML
     private void goToProducts(javafx.event.ActionEvent event)
     {
