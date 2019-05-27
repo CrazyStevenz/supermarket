@@ -292,7 +292,11 @@ public class ProductController {
 
     @FXML
     private void back(javafx.event.ActionEvent event) {
-        ScreenController.goToUserHome(event);
+        if (User.getUserInstance().getKind() == 2) {
+            ScreenController.goToAdminHome(event);
+        } else {
+            ScreenController.goToUserHome(event);
+        }
     }
 
     @FXML
