@@ -51,6 +51,10 @@ public class ScreenController {
         showStage(event, "../../resources/fxml/Admin.fxml", "Administrator Panel");
     }
 
+    static void goToLog(ActionEvent event) {
+        showStage(event, "../../resources/fxml/Log.fxml", "Log Viewer");
+    }
+
     public static void logout(ActionEvent event) {
         showStage(event, "../../resources/fxml/Login.fxml", "Login");
     }

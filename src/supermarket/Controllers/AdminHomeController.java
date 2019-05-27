@@ -32,4 +32,9 @@ public class AdminHomeController {
     private void goToAdminPanel(javafx.event.ActionEvent event) {
         ScreenController.goToAdminPanel(event);
     }
+
+    @FXML
+    private void goToLog(javafx.event.ActionEvent event) {
+        ScreenController.goToLog(event);
+    }
 }
