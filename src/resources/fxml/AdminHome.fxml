@@ -59,6 +59,7 @@
                   </ImageView>
                </graphic></Button>
             <Button mnemonicParsing="false" onAction="#goToLog" text="Log" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="CENTER" GridPane.columnSpan="3" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
    </children>

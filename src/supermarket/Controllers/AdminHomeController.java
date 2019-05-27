@@ -4,11 +4,6 @@ import javafx.fxml.FXML;
 
 public class AdminHomeController {
     @FXML
-    private void back(javafx.event.ActionEvent event) {
-        ScreenController.goToAdminHome(event);
-    }
-
-    @FXML
     private void logout(javafx.event.ActionEvent event) {
         ScreenController.logout(event);
     }
