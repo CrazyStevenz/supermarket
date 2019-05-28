@@ -111,7 +111,7 @@ public class StoreController {
     @FXML
     private void newStore() {
         try {
-            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            fh = new FileHandler("logfile.log", true);
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
@@ -145,7 +145,7 @@ public class StoreController {
     @FXML
     private void delete() {
         try {
-            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            fh = new FileHandler("logfile.log", true);
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
@@ -185,7 +185,7 @@ public class StoreController {
     @FXML
     private void save() {
         try {
-            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            fh = new FileHandler("logfile.log", true);
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);

@@ -126,7 +126,7 @@ public class ProductController {
             errorLabel.setText("Select a product first.");
         } else {
             try {
-                fh = new FileHandler("..\\supermarket\\logfile.log", true);
+                fh = new FileHandler("logfile.log", true);
                 logger.addHandler(fh);
                 SimpleFormatter formatter = new SimpleFormatter();
                 fh.setFormatter(formatter);
@@ -181,7 +181,7 @@ public class ProductController {
     @FXML
     private void newProduct() {
         try {
-            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            fh = new FileHandler("logfile.log", true);
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
@@ -214,7 +214,7 @@ public class ProductController {
     @FXML
     private void delete() {
         try {
-            fh = new FileHandler("..\\supermarket\\logfile.log", true);
+            fh = new FileHandler("logfile.log", true);
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);

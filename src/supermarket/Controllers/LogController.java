@@ -16,7 +16,7 @@ public class LogController {
         try {
             logTextArea.setText("");
 
-            FileInputStream fstream = new FileInputStream("..\\supermarket\\logfile.log");
+            FileInputStream fstream = new FileInputStream("logfile.log");
             BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
             String strLine;
 
