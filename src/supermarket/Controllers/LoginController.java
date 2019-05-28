@@ -85,17 +85,18 @@ public class LoginController {
 
             String createTableUsers =
                     "CREATE TABLE users (" +
-                        "id SERIAL NOT NULL CONSTRAINT users_pk PRIMARY KEY, " +
-                        "username VARCHAR(20), " +
+                        "id SERIAL CONSTRAINT users_pk PRIMARY KEY, " +
+                        "username VARCHAR(20) NOT NULL, " +
                         "password VARCHAR(40), " +
                         "name VARCHAR(50), " +
-                        "kind INT" +
-                    ")";
+                        "kind INT NOT NULL" +
+                    ");" +
+                    "CREATE UNIQUE INDEX users_username_uindex ON users (username)";
             st.executeUpdate(createTableUsers);
 
             String createTableProducts =
                     "CREATE TABLE products (" +
-                        "id SERIAL NOT NULL constraint products_pk PRIMARY KEY, " +
+                        "id SERIAL CONSTRAINT products_pk PRIMARY KEY, " +
                         "name VARCHAR(50) NOT NULL, " +
                         "price FLOAT(2) NOT NULL, " +
                         "stock INT" +
@@ -105,19 +106,21 @@ public class LoginController {
 
             String createTableTransactions =
                     "CREATE TABLE transactions (" +
-                        "id SERIAL NOT NULL CONSTRAINT transactions_pk PRIMARY KEY, " +
+                        "id SERIAL CONSTRAINT transactions_pk PRIMARY KEY, " +
                         "user_id INT NOT NULL, " +
                         "product_id INT NOT NULL, " +
                         "amount INT NOT NULL, " +
                         "purchase_date TIMESTAMP" +
                     ");" +
                     "ALTER TABLE transactions ADD CONSTRAINT transactions_users_id_fk " +
-                        "FOREIGN KEY (user_id) REFERENCES users ON UPDATE CASCADE ON DELETE CASCADE;";
+                        "FOREIGN KEY (user_id) REFERENCES users ON UPDATE CASCADE ON DELETE CASCADE;" +
+                    "ALTER TABLE transactions ADD CONSTRAINT transactions_product_id_fk " +
+                        "FOREIGN KEY (product_id) REFERENCES products ON UPDATE CASCADE ON DELETE CASCADE;";
             st.executeUpdate(createTableTransactions);
 
             String createTableStores =
                     "CREATE TABLE stores (" +
-                            "id SERIAL NOT NULL CONSTRAINT stores_pk PRIMARY KEY, " +
+                            "id SERIAL CONSTRAINT stores_pk PRIMARY KEY, " +
                             "address VARCHAR(50), " +
                             "phone VARCHAR(20), " +
                             "work_hours VARCHAR(20) " +
