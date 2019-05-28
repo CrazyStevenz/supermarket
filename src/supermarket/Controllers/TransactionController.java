@@ -52,15 +52,25 @@ public class TransactionController {
         try {
             conn = DatabaseController.getConnection();
 
-            String getTransactionsQuery =
-                    "SELECT * " +
-                    "FROM transactions " +
-                    "WHERE user_id = ? " +
-                    "ORDER BY id";
+            if (User.getUserInstance().getKind() == 2) {
+                String getTransactionsQuery =
+                        "SELECT * " +
+                        "FROM transactions " +
+                        "ORDER BY id";
 
-            ps = conn.prepareStatement(getTransactionsQuery);
-            ps.setInt(1, User.getUserInstance().getId());
-            rs = ps.executeQuery();
+                st = conn.createStatement();
+                rs = st.executeQuery(getTransactionsQuery);
+            } else {
+                String getTransactionsQuery =
+                        "SELECT * " +
+                        "FROM transactions " +
+                        "WHERE user_id = ? " +
+                        "ORDER BY id";
+
+                ps = conn.prepareStatement(getTransactionsQuery);
+                ps.setInt(1, User.getUserInstance().getId());
+                rs = ps.executeQuery();
+            }
 
             int id, user_id, product_id, amount, i = 0;
             String purchase_date;
@@ -98,7 +108,21 @@ public class TransactionController {
                     productName = rs.getString("name");
                 }
 
-                transactionItems.add(productName + " - " + transactions[j].getAmount());
+                String getUserNameQuery =
+                        "SELECT name " +
+                        "FROM users " +
+                        "WHERE id = " + transactions[j].getUser_id();
+
+                st = conn.createStatement();
+                rs = st.executeQuery(getUserNameQuery);
+
+                String userName = "";
+
+                while (rs.next()) {
+                    userName = rs.getString("name");
+                }
+
+                transactionItems.add(userName + " - " + productName);
             }
 
             transactionListView.setItems(transactionItems);

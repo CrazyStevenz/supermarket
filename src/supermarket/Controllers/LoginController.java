@@ -60,11 +60,11 @@ public class LoginController {
         }
 
         if (username != null && name != null && !name.equals("") && id != -1) { // TODO Check if null returns ""
-            new User(id, username, name, kind).login();
-
             if (kind != 2) {
+                new User(id, username, name, 1).login();
                 ScreenController.goToUserHome(event);
             } else {
+                new User(id, username, name, 2).login();
                 ScreenController.goToAdminHome(event);
             }
         } else {

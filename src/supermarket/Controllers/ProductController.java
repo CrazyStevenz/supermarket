@@ -114,7 +114,7 @@ public class ProductController {
             deleteButton.setDisable(false);
             saveButton.setDisable(false);
         } else {
-            errorLabel.setText("Refresh the list first");
+            errorLabel.setText("Refresh the list first.");
         }
     }
 
